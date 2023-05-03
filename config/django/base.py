@@ -17,6 +17,8 @@ LOCAL_APPS = [
     'socialmedia.core.apps.CoreConfig',
     'socialmedia.common.apps.CommonConfig',
 	'socialmedia.users.apps.UsersConfig',
+	'socialmedia.media.apps.MediaConfig',
+
 ]
 
 THIRD_PARTY_APPS = [
