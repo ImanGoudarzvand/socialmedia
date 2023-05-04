@@ -10,6 +10,7 @@ from socialmedia.users.services.user import register
 from socialmedia.users.selectors.profile import get_profile
 from drf_spectacular.utils import extend_schema
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.cache import cache
 
 class RegisterApi(APIView):
 
@@ -73,6 +74,16 @@ class ProfileApi(ApiAuthMixin,APIView):
         class Meta:
             model = Profile
             fields = ('bio', 'subscribers_count', 'subscriptions_count', 'posts_count')
+
+        def to_representation(self, instance):
+            rep = super().to_representation(instance)
+            cache_profile = cache.get(f"profile_{instance.user}", {})
+            if cache_profile:
+                rep["posts_count"] = cache_profile.get("posts_count")
+                rep["subscribers_count"] = cache_profile.get("subscribers_count")
+                rep["subscriptions_count"] = cache_profile.get("subscriptions_count")
+
+            return rep
 
     @extend_schema(responses=OutputProfileSerializer)
     def get(self, request):
