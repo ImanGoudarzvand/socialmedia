@@ -45,3 +45,8 @@ python manage.py runserver
   celery -A config worker -l info --without-gossip --without-mingle --without-heartbeat
   celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
 ```
+
+9- Run tests
+```
+pytest
+```
